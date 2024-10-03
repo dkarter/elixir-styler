@@ -220,9 +220,6 @@ defmodule Styler.Style.ModuleDirectivesTest do
                      |> File.read!()
                      |> String.split("<!-- MDOC !-->")
                      |> Enum.fetch!(1)
-          @behaviour Chaotic
-          @behaviour Lawful
-
           use B
           use A.A
 
@@ -237,8 +234,10 @@ defmodule Styler.Style.ModuleDirectivesTest do
           require B
           require C
 
+          @behaviour Lawful
           def c(x), do: y
 
+          @behaviour Chaotic
           @doc "d doc"
           def d do
             import Ecto.Query
@@ -557,8 +556,6 @@ defmodule Styler.Style.ModuleDirectivesTest do
       """
       defmodule MyModule do
         @moduledoc "Implements \#{A.B.C.foo()}!"
-        @behaviour G.H.C
-
         use SomeMacro, with: Z.X.C
 
         import A.B
@@ -569,6 +566,8 @@ defmodule Styler.Style.ModuleDirectivesTest do
         alias D.F.C
         alias G.H.C
         alias Z.X.C
+
+        @behaviour C
       end
       """
     )

@@ -33,7 +33,6 @@ defmodule Styler.Style.ModuleDirectives do
 
     * `@shortdoc`
     * `@moduledoc`
-    * `@behaviour`
     * `use`
     * `import`
     * `alias`
@@ -47,7 +46,7 @@ defmodule Styler.Style.ModuleDirectives do
   alias Styler.Zipper
 
   @directives ~w(alias import require use)a
-  @attr_directives ~w(moduledoc shortdoc behaviour)a
+  @attr_directives ~w(moduledoc shortdoc)a
   @defstruct ~w(schema embedded_schema defstruct)a
 
   @moduledoc_false {:@, [line: nil], [{:moduledoc, [line: nil], [{:__block__, [line: nil], [false]}]}]}
@@ -146,7 +145,6 @@ defmodule Styler.Style.ModuleDirectives do
   @acc %{
     shortdoc: [],
     moduledoc: [],
-    behaviour: [],
     use: [],
     import: [],
     alias: [],
@@ -212,7 +210,7 @@ defmodule Styler.Style.ModuleDirectives do
       |> Map.new(fn
         {:moduledoc, []} -> {:moduledoc, List.wrap(moduledoc)}
         {:use, uses} -> {:use, uses |> Enum.reverse() |> Style.reset_newlines()}
-        {directive, to_sort} when directive in ~w(behaviour import alias require)a -> {directive, sort(to_sort)}
+        {directive, to_sort} when directive in ~w(import alias require)a -> {directive, sort(to_sort)}
         {:dealiases, d} -> {:dealiases, d}
         {k, v} -> {k, Enum.reverse(v)}
       end)
@@ -256,7 +254,6 @@ defmodule Styler.Style.ModuleDirectives do
       [
         acc.shortdoc,
         acc.moduledoc,
-        acc.behaviour,
         acc.use,
         acc.import,
         acc.alias,
